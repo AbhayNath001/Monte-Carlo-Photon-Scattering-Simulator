@@ -1,31 +1,3 @@
-"""
-Monte Carlo photon transport in a homogeneous scattering/absorbing medium.
-
-Implements the four components described in the manuscript
-"Monte Carlo-Simulated Photon Scattering Patterns in Biological Tissues for AI Imaging":
-
-  1. Photon transport model   -> position / direction / weight tracked per photon
-  2. Henyey-Greenstein phase  -> sampling of the scattering angle, anisotropy g
-  3. Beer-Lambert absorption  -> weight *= exp(-mu_a * step)
-  4. Random walk              -> exponential step lengths, s = -ln(xi) / mu_s
-
-Output: a 256x256 grayscale photon-density image (0-255) plus a metadata CSV row,
-matching the dataset layout (Image_Path, Wavelength_nm, Scattering_Coefficient,
-Anisotropy, Absorption_Coefficient).
-
-ASSUMPTIONS (the paper does not specify these; change them if you know better):
-  * Medium: slab of thickness `depth_cm` along z, wide laterally; photons launched
-    at x=y=z=0 travelling in +z (pencil beam).
-  * Image plane: x-z cross-section (lateral position vs depth), so penetration depth
-    and lateral spread are both visible.
-  * Step length uses mu_s only, as in the paper's random-walk description
-    (absorption is applied separately via Beer-Lambert weight decay).
-  * Wavelength dependence: mu_s(lambda) = mu_s * (lambda / 650 nm) ** (-b).
-    The paper reports "shorter wavelength -> more scattering" but gives no formula.
-    b = 1.0 is a typical tissue value; set b = 0 to disable.
-  * Density = sum of photon weight deposited at every interaction site.
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -111,7 +83,7 @@ def simulate_photon_density(
     rng = rng or np.random.default_rng()
     n = cfg.n_photons
 
-    # Wavelength-dependent scattering (assumption, see module docstring)
+    # Wavelength-dependent scattering
     mu_s_eff = mu_s * (wavelength_nm / cfg.lambda_ref_nm) ** (-cfg.lambda_exponent)
 
     pos = np.zeros((n, 3))
@@ -194,7 +166,7 @@ def density_to_uint8(density: np.ndarray, log_scale: bool = True) -> np.ndarray:
 
 
 # --------------------------------------------------------------------------- #
-# Dataset generation (metadata layout from Tables 1 and 2)
+# Dataset generation
 # --------------------------------------------------------------------------- #
 WAVELENGTHS_NM = [450, 532, 650, 780]
 # Table 2's values (e.g. 0.7222, 0.7644, 0.2556) correspond to 10-point linspace grids,
