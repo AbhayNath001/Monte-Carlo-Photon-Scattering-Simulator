@@ -16,8 +16,8 @@ from PIL import Image
 class SimConfig:
     n_photons: int = 5000          # photons per image (paper: 5000)
     img_size: int = 256            # output resolution (paper: 256 x 256)
-    depth_cm: float = 5.0          # slab thickness along z
-    half_width_cm: float = 2.5     # lateral half-extent covered by the image
+    depth_mm: float = 5.0          # slab thickness along z
+    half_width_mm: float = 2.5     # lateral half-extent covered by the image
     max_steps: int = 2000          # safety cap on scattering events per photon
     weight_threshold: float = 1e-4 # Russian-roulette threshold
     roulette_m: int = 10           # roulette survival 1/m
@@ -108,9 +108,9 @@ def simulate_photon_density(
         # lateral window are terminated.
         out = (
             (pos[idx, 2] < 0.0)
-            | (pos[idx, 2] > cfg.depth_cm)
-            | (np.abs(pos[idx, 0]) > cfg.half_width_cm)
-            | (np.abs(pos[idx, 1]) > cfg.half_width_cm * 4)  # y unbounded-ish (projected out)
+            | (pos[idx, 2] > cfg.depth_mm)
+            | (np.abs(pos[idx, 0]) > cfg.half_width_mm)
+            | (np.abs(pos[idx, 1]) > cfg.half_width_mm * 4)  # y unbounded-ish (projected out)
         )
         alive[idx[out]] = False
         idx = idx[~out]
@@ -150,7 +150,7 @@ def simulate_photon_density(
     hist, _, _ = np.histogram2d(
         z, x,
         bins=cfg.img_size,
-        range=[[0.0, cfg.depth_cm], [-cfg.half_width_cm, cfg.half_width_cm]],
+        range=[[0.0, cfg.depth_mm], [-cfg.half_width_mm, cfg.half_width_mm]],
         weights=wt,
     )
     return hist
