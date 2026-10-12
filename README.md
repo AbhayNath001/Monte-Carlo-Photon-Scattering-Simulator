@@ -6,10 +6,6 @@ It generates 256 × 256 grayscale photon-density images of light propagating thr
 homogeneous scattering and absorbing medium, together with a metadata CSV that links each
 image to the optical parameters used to produce it.
 
-> **Note:** The manuscript does not publish simulation code (its Code Availability section
-> says none was used). This is a reconstruction from the paper's written methods, not the
-> authors' original implementation. See [Assumptions](#assumptions) below.
-
 ## Physical model
 
 | Component | Implementation |
@@ -91,25 +87,6 @@ image = density_to_uint8(density)   # (256, 256) uint8 array
 | Anisotropy g | 0.7 – 0.99 |
 | Absorption coefficient µa | 0.1 – 1.5 cm⁻¹ |
 
-## Assumptions
-
-The paper leaves the following unspecified. These are my choices and can be changed in
-`SimConfig` or the grid constants near the bottom of `photon_mc.py`.
-
-- **Geometry:** a slab of thickness `depth_cm = 5.0` with a pencil beam launched at the
-  origin along +z. Photons leaving the slab or the lateral window are terminated.
-- **Image plane:** the image is an x–z cross-section (rows = depth, columns = lateral
-  position). The paper does not state which projection was used.
-- **Density definition:** the sum of photon weight at every interaction site, binned
-  into a 256 × 256 histogram.
-- **Wavelength dependence:** µs is scaled as `mu_s * (lambda / 650) ** -b` with `b = 1.0`
-  (`lambda_exponent` in `SimConfig`). The paper says shorter wavelengths scatter more but
-  gives no formula. Set `lambda_exponent = 0` to disable.
-- **Normalisation:** log-compressed, then scaled to 0–255. Pass `log_scale=False` to
-  `density_to_uint8` for linear scaling.
-- **Parameter grids:** Table 1 states 25 / 30 / 15 discrete values for µs / g / µa, but
-  the values listed in Table 2 (e.g. 0.7222, 0.7644, 0.2556) fit 10-point `linspace` grids.
-  The code uses the 10-point grids. Edit `MU_S_GRID`, `G_GRID` and `MU_A_GRID` to change this.
 
 ## Expected behaviour
 
