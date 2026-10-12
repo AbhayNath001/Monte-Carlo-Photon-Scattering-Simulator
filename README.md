@@ -136,3 +136,45 @@ sites. Increase `--photons` for denser maps.
 | `roulette_m` | 10 | Roulette survival probability is 1/m |
 | `lambda_ref_nm` | 650 | Reference wavelength for µs scaling |
 | `lambda_exponent` | 1.0 | Exponent `b` in the wavelength scaling |
+
+---
+
+## 📬 Contact
+
+<table>
+<tr>
+<td width="65%">
+
+### 👤 Research Profile
+
+**Name:** Abhay Nath |
+**Affiliation:** AI-ML Research Scientist
+
+**📧 Email:** [dr.abhaynath001@gmail.com](mailto:dr.abhaynath001@gmail.com)
+**🔗 GitHub:** https://github.com/AbhayNath001
+**🎓 LinkedIn:** https://www.linkedin.com/in/abhaynath001/ 
+
+**🧪 Research Areas:**
+
+* Artificial Intelligence
+* Machine Learning
+* Deep Learning
+* Computer Vision
+* Generative AI
+* MedTech
+
+</td>
+
+<td width="35%" align="center">
+
+<img src="https://raw.githubusercontent.com/AbhayNath001/AbhayNath001/main/Passport%20Size%20Image%20(1).jpg" width="160" style="border:2px solid #e0e0e0; border-radius:12px; padding:6px;" />
+
+<br><br>
+
+<i>Abhay Nath | Kolkata, West Bengal, India</i>
+
+</td>
+</tr>
+</table>
+
+---
